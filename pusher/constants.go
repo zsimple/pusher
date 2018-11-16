@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 // Only this version is supported
 const supportedProtocolVersion = 7

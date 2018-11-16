@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"bytes"
@@ -13,8 +13,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dimiro1/ipe/utils"
 	log "github.com/golang/glog"
+	"github.com/zsimple/pusher/utils"
 )
 
 const maxTimeout = 3 * time.Second
@@ -145,7 +145,7 @@ func triggerHook(ctx context.Context, a *app, event hookEvent) error {
 	defer close(done)
 
 	go func() {
-		log.Infof("Triggering %s event", event.Name)
+		log.V(3).Infof("Triggering %s event", event.Name)
 
 		hook := webHook{TimeMs: time.Now().Unix()}
 
@@ -172,13 +172,13 @@ func triggerHook(ctx context.Context, a *app, event hookEvent) error {
 
 		req.WithContext(ctx)
 
-		req.Header.Set("User-Agent", "Ipe UA; (+https://github.com/dimiro1/ipe)")
+		req.Header.Set("User-Agent", "pusher UA; (+https://github.com/zsimple/pusher)")
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("X-Pusher-Key", a.Key)
 		req.Header.Set("X-Pusher-Signature", utils.HashMAC(js, []byte(a.Secret)))
 
-		log.V(1).Infof("%+v", req.Header)
-		log.V(1).Infof("%+v", string(js))
+		log.V(3).Infof("%+v", req.Header)
+		log.V(3).Infof("%+v", string(js))
 
 		resp, err := http.DefaultClient.Do(req)
 

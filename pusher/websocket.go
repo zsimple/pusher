@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"encoding/json"
@@ -12,11 +12,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/go-chi/chi"
 	log "github.com/golang/glog"
 	"github.com/gorilla/websocket"
-	"github.com/pressly/chi"
 
-	"github.com/dimiro1/ipe/utils"
+	"github.com/zsimple/pusher/utils"
 )
 
 var upgrader = websocket.Upgrader{
@@ -45,7 +45,7 @@ func handleMessages(conn *websocket.Conn, sessionID string, app *app) {
 			return
 		}
 
-		log.Infof("websockets: Handling %s event", event.Event)
+		log.V(2).Infof("websockets: Handling %s event", event.Event)
 
 		switch event.Event {
 		case "pusher:ping":
@@ -88,7 +88,7 @@ func onOpen(conn *websocket.Conn, r *http.Request, sessionID string, app *app) e
 		return newNoProtocolVersionSuppliedError()
 	case protocol != supportedProtocolVersion:
 		return newUnsupportedProtocolVersionError()
-	case app.ApplicationDisabled:
+	case app.Disabled:
 		return newApplicationDisabledError()
 	case app.OnlySSL:
 		if r.TLS == nil {
@@ -213,7 +213,7 @@ func onSubscribe(conn *websocket.Conn, sessionID string, app *app, message []byt
 	}
 
 	channel := app.FindOrCreateChannelByChannelID(channelName)
-	log.Info(subscribeEvent.Data.ChannelData)
+	log.V(3).Info(subscribeEvent.Data.ChannelData)
 
 	if err := app.Subscribe(channel, connection, subscribeEvent.Data.ChannelData); err != nil {
 		emitWSError(newGenericReconnectImmediatelyError(), conn)

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"encoding/json"
@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dimiro1/ipe/utils"
 	log "github.com/golang/glog"
+	"github.com/zsimple/pusher/utils"
 )
 
 // A Channel
@@ -66,7 +66,7 @@ func (c *channel) TotalUsers() int {
 
 // Add a new subscriber to the channel
 func (c *channel) Subscribe(a *app, conn *connection, channelData string) error {
-	log.Infof("Subscribing %s to channel %s", conn.SocketID, c.ChannelID)
+	log.V(2).Infof("Subscribing %s to channel %s", conn.SocketID, c.ChannelID)
 
 	c.Lock()
 	defer c.Unlock()
@@ -84,7 +84,7 @@ func (c *channel) Subscribe(a *app, conn *connection, channelData string) error 
 		UserInfo json.RawMessage `json:"user_info"`
 	}
 
-	log.Infof("%+v", channelData)
+	log.V(3).Infof("%+v", channelData)
 
 	if err := json.Unmarshal([]byte(channelData), &info); err != nil {
 		log.Error(err)
@@ -137,7 +137,7 @@ func (c *channel) IsSubscribed(conn *connection) bool {
 // Remove the subscriber from the channel
 // It destroy the channel if the channels does not have any subscribers.
 func (c *channel) Unsubscribe(a *app, conn *connection) error {
-	log.Infof("Unsubscribing %s from channel %s", conn.SocketID, c.ChannelID)
+	log.V(2).Infof("Unsubscribing %s from channel %s", conn.SocketID, c.ChannelID)
 
 	c.Lock()
 	defer c.Unlock()
@@ -170,7 +170,7 @@ func (c *channel) Unsubscribe(a *app, conn *connection) error {
 
 // Create a new Channel
 func newChannel(channelID string) *channel {
-	log.Infof("Creating a new channel: %s", channelID)
+	log.V(2).Infof("Creating a new channel: %s", channelID)
 
 	return &channel{ChannelID: channelID, CreatedAt: time.Now(), Subscriptions: make(map[string]*subscription)}
 }
@@ -207,7 +207,7 @@ func (c *channel) Publish(a *app, event rawEvent, ignore string) error {
 		return err
 	}
 
-	log.Infof("Publishing message %+v to channel %s", v, c.ChannelID)
+	log.V(3).Infof("Publishing message %+v to channel %s", v, c.ChannelID)
 
 	for _, subs := range c.Subscriptions {
 		if subs.Connection.SocketID != ignore {

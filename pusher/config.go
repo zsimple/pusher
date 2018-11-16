@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 // The config file
 type configFile struct {
@@ -18,15 +18,15 @@ type configFile struct {
 }
 
 type configApp struct {
-	Name                string
-	AppID               string
-	Key                 string
-	Secret              string
-	OnlySSL             bool
-	ApplicationDisabled bool
-	UserEvents          bool
-	WebHooks            bool
-	URLWebHook          string
+	Name       string
+	AppID      string
+	Key        string
+	Secret     string
+	OnlySSL    bool
+	Disabled   bool
+	UserEvents bool
+	WebHooks   bool
+	URLWebHook string
 }
 
 func newAppFromConfig(a configApp) *app {
@@ -36,7 +36,7 @@ func newAppFromConfig(a configApp) *app {
 		a.Key,
 		a.Secret,
 		a.OnlySSL,
-		a.ApplicationDisabled,
+		a.Disabled,
 		a.UserEvents,
 		a.WebHooks,
 		a.URLWebHook,

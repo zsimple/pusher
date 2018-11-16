@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"errors"
@@ -17,15 +17,15 @@ import (
 type app struct {
 	sync.Mutex
 
-	Name                string
-	AppID               string
-	Key                 string
-	Secret              string
-	OnlySSL             bool
-	ApplicationDisabled bool
-	UserEvents          bool
-	WebHooks            bool
-	URLWebHook          string
+	Name       string
+	AppID      string
+	Key        string
+	Secret     string
+	OnlySSL    bool
+	Disabled   bool
+	UserEvents bool
+	WebHooks   bool
+	URLWebHook string
 
 	Channels    map[string]*channel
 	Connections map[string]*connection
@@ -36,15 +36,15 @@ type app struct {
 func newApp(name, appID, key, secret string, onlySSL, disabled, userEvents, webHooks bool, webHookURL string) *app {
 
 	a := &app{
-		Name:                name,
-		AppID:               appID,
-		Key:                 key,
-		Secret:              secret,
-		OnlySSL:             onlySSL,
-		ApplicationDisabled: disabled,
-		UserEvents:          userEvents,
-		WebHooks:            webHooks,
-		URLWebHook:          webHookURL,
+		Name:       name,
+		AppID:      appID,
+		Key:        key,
+		Secret:     secret,
+		OnlySSL:    onlySSL,
+		Disabled:   disabled,
+		UserEvents: userEvents,
+		WebHooks:   webHooks,
+		URLWebHook: webHookURL,
 	}
 
 	a.Connections = make(map[string]*connection)
@@ -95,12 +95,12 @@ func (a *app) PublicChannels() []*channel {
 
 // Disconnect Socket
 func (a *app) Disconnect(socketID string) {
-	log.Infof("Disconnecting socket %+v", socketID)
+	log.V(3).Infof("Disconnecting socket %+v", socketID)
 
 	conn, err := a.FindConnection(socketID)
 
 	if err != nil {
-		log.Infof("Socket not found, %+v", err)
+		log.V(3).Infof("Socket not found, %+v", err)
 		return
 	}
 
@@ -128,7 +128,7 @@ func (a *app) Disconnect(socketID string) {
 
 // Connect a new Subscriber
 func (a *app) Connect(conn *connection) {
-	log.Infof("Adding a new Connection %s to app %s", conn.SocketID, a.Name)
+	log.V(3).Infof("Adding a new Connection %s to app %s", conn.SocketID, a.Name)
 	a.Lock()
 	defer a.Unlock()
 
@@ -150,7 +150,7 @@ func (a *app) FindConnection(socketID string) (*connection, error) {
 
 // DeleteChannel removes the channel from app
 func (a *app) RemoveChannel(c *channel) {
-	log.Infof("Remove the channel %s from app %s", c.ChannelID, a.Name)
+	log.V(3).Infof("Remove the channel %s from app %s", c.ChannelID, a.Name)
 	a.Lock()
 	defer a.Unlock()
 
@@ -173,7 +173,7 @@ func (a *app) RemoveChannel(c *channel) {
 
 // Add a new Channel to this APP
 func (a *app) AddChannel(c *channel) {
-	log.Infof("Adding a new channel %s to app %s", c.ChannelID, a.Name)
+	log.V(3).Infof("Adding a new channel %s to app %s", c.ChannelID, a.Name)
 
 	a.Lock()
 	defer a.Unlock()

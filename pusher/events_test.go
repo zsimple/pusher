@@ -1,4 +1,4 @@
-package ipe
+package pusher
 
 import (
 	"bytes"

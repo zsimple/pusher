@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"time"
@@ -24,7 +24,7 @@ type connection struct {
 
 // Create a new Subscriber
 func newConnection(socketID string, s socket) *connection {
-	log.Infof("Creating a new Subscriber %+v", socketID)
+	log.V(2).Infof("Creating a new Subscriber %+v", socketID)
 
 	return &connection{SocketID: socketID, Socket: s, CreatedAt: time.Now()}
 }

@@ -1,53 +1,10 @@
-# Maintainer Needed
+# Pusher
 
-Unfortunatelly I am not using this software in production anymore and also I do not have many free time available to keep evolving this project, so, if you are interested in maintaining it, please, send me a message [dimiro1 at gmail] with your ideas on how you can maintain/evolve this project.
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/dimiro1/ipe)](https://goreportcard.com/report/github.com/dimiro1/ipe)
-
-Try browsing [the code on Sourcegraph](https://sourcegraph.com/github.com/dimiro1/ipe)!
-
-# IPÊ
-
-This software is written in Go - the WYSIWYG lang
+Pusher.js 后端的Golang实现，来自dirmiro1/ipe，继续开发满足公司内部需求。
 
 # Why I wrote this software?
 
-1. I wanted to learn Go and I needed a non trivial application;
-2. I use Pusher in some projects;
-3. I really like Pusher;
-
-# Features
-
-* Public Channels;
-* Private Channels;
-* Presence Channels;
-* Web Hooks;
-* Client events;
-* Complete REST API;
-* Easy installation;
-* A single binary without dependencies;
-* Easy configuration;
-* Protocol version 7;
-* Multiple apps in the same instance;
-* Drop in replacement for pusher server;
-
-# Download pre built binaries
-
-You can download pre built binaries from the [releases tab](https://github.com/dimiro1/ipe/releases).
-
-I do not have a Windows machine, so I can only distribute binaries for amd64 linux and amd64 darwin.
-
-# Building
-
-```console
-$ go get github.com/dimiro1/ipe
-```
-
-or simply
-
-```console
-$ go install github.com/dimiro1/ipe
-```
+1. 项目中一开始用的云巴，但是它有点贵……
 
 # How to configure?
 
@@ -63,7 +20,7 @@ $ go install github.com/dimiro1/ipe
 	"SSLCertFile": "A cert.pem file",   // Required if SSL is true
 	"Apps": [                           // Required, A Json arrays with multiple apps
 		{
-			"ApplicationDisabled": false,               // Required but can be false
+			"Disabled": false,                          // Required but can be false
 			"Secret": "A really secret random string",  // Required
 			"Key": "A random Key string",               // Required
 			"OnlySSL": false,                           // Required but can be false
@@ -121,44 +78,6 @@ var pusher = new Pusher({
 
 ```
 
-# Logging
+# About Pusher
 
-This software uses the [glog](https://github.com/golang/glog) library
-
-for more information about logging type the following in console.
-
-```console
-$ ipe -h
-```
-
-# When use this software?
-
-* When you are offline;
-* When you want to control your infrastructure;
-* When you do not want to have external dependencies;
-* When you want extend the protocol;
-
-# Contributing.
-
-Feel free to fork this repo.
-
-# Pusher
-
-Pusher is an excelent service, their service is very reliable. I recomend for everyone.
-
-# Where this name came from?
-
-Here in Brazil we have this beautiful tree called [Ipê](http://en.wikipedia.org/wiki/Tabebuia_aurea), it comes in differente colors: yellow, pink, white, purple.
-
-[I want to see pictures](https://www.flickr.com/search/?q=ipe)
-
-# Author
-
-Claudemiro Alves Feitosa Neto
-
-# LICENSE
-
-Copyright 2014, 2015, 2016 Claudemiro Alves Feitosa Neto. All rights reserved.
-Use of this source code is governed by a MIT-style
-license that can be found in the LICENSE file.
-
+Pusher 是非常棒的服务，不过在国内不够迅捷稳定……

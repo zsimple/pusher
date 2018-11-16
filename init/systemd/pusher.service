@@ -1,0 +1,16 @@
+[Unit]
+Description=pusher
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=pusher
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=pusher
+ExecStart=/path/to/pusher -logtostderr -config="path_to_config.json"
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package ipe
+package pusher
 
 import (
 	"encoding/json"
@@ -12,10 +12,10 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/go-chi/chi"
 	log "github.com/golang/glog"
-	"github.com/pressly/chi"
 
-	"github.com/dimiro1/ipe/utils"
+	"github.com/zsimple/pusher/utils"
 )
 
 // Prepare QueryString
@@ -94,7 +94,7 @@ func checkAppDisabled(DB db) func(http.Handler) http.Handler {
 				return
 			}
 
-			if currentApp.ApplicationDisabled {
+			if currentApp.Disabled {
 				http.Error(w, "Application disabled", http.StatusForbidden)
 				return
 			}
@@ -152,7 +152,7 @@ func (h *postEventsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Info(input.Channels)
+	log.V(3).Info(input.Channels)
 	if len(input.Channel) > 0 && len(input.Channels) == 0 {
 		input.Channels = append(input.Channels, input.Channel)
 	}

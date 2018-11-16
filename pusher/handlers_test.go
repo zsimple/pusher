@@ -1,4 +1,4 @@
-package ipe
+package pusher
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/pressly/chi"
+	"github.com/go-chi/chi"
 )
 
 var (
